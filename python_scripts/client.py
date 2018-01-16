@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import socket
 
 SRV_ADDR = input("Type the server IP address: ")
