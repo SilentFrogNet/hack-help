@@ -1,0 +1,15 @@
+code.inline {
+    background-color: rgb(230, 230, 230);
+    padding: 2px 5px 2px 5px;
+}
+ul.nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+ul.nav li {
+    display: inline;
+}
+ul.nav li a {
+    padding: 8px;
+}

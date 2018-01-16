@@ -4,16 +4,15 @@
         <title>Pentester Utils</title>
 
         <link rel="stylesheet" type="text/css" href="css/desert.css">
+        <link rel="stylesheet" type="text/css" href="css/custom_style.css">
         <script type="text/javascript" src="js/run_prettify.js?autoload=false"></script>
-
-        <style>
-            code.inline {
-                background-color: #aaa;
-                padding: 2px 5px 2px 5px;
-            }
-        </style>
     </head>
     <body onload="PR.prettyPrint()">
+        <ul class="nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="useful_commands.html">Useful Commands</a></li>
+        </ul>
+        <hr>
         <h1>Table of Content</h1>
         <ol>
             <li><a href="#circular-process">Circular process</a></li>
@@ -261,7 +260,7 @@ Host</b>: www.example.site
             <li>
                 <b>Reflected XSS</b>: when the injected text is reflected on the page (appears in the page)
                 <br>
-                <b><i>Chrome has a REFLECTED XSS FILTER built in. Always use FIREFOX!!!</i></b>
+                <span style="color: red"><b><i>Chrome has a REFLECTED XSS FILTER built in. Always use FIREFOX!!!</i></b></span>
             </li>
             <li>
                 <b>Persistent XSS</b>: when the payload is sent to the vulnerable web server and the <b>stored</b>.

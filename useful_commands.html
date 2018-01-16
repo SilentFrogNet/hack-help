@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pentester Utils - Useful Commands</title>
+
+        <link rel="stylesheet" type="text/css" href="css/desert.css">
+        <link rel="stylesheet" type="text/css" href="css/custom_style.css">
+        <script type="text/javascript" src="js/run_prettify.js?autoload=false"></script>
+    </head>
+    <body onload="PR.prettyPrint()">
+        <ul class="nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="useful_commands.html">Useful Commands</a></li>
+        </ul>
+        <hr>
+        <h1>Table of Content</h1>
+        <ol>
+            <li><a href="#routes">Routes</a>
+                <ul>
+                    <li><a href="#routes-show">Show</a></li>
+                    <li><a href="#routes-add">Add</a></li>
+                </ul>
+            </li>
+        </ol>
+        <h1 id="routes">Routes</h1>
+        <h2 id="routes-show">Show</h2>
+        <p>
+<pre class="prettyprint">
+<code>
+$ route
+</code>
+</pre>
+        </p>
+        <h2 id="routes-add">Add</h2>
+        <p>
+<pre class="prettyprint">
+<code>
+$ ip route add &lt;net_address_in_cdr&gt; via &lt;interface_gateway&gt;
+</code>
+</pre>
+        </p>
+        <h1 id="linux-commands">Linux Commands</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        COMMAND
+                    </th>
+                    <th>
+                        DESCRIPTION
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">netstat -tulpn</code>
+                    </td>
+                    <td>
+                        Show Linux network ports with process ID’s (PIDs)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">watch ss -stplu</code>
+                    </td>
+                    <td>
+                        Watch TCP, UDP open ports in real time with socket summary.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">lsof -i</code>
+                    </td>
+                    <td>
+                        Show established connections.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">macchanger -m MACADDR INTR</code>
+                    </td>
+                    <td>
+                        Change MAC address on KALI Linux.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">ifconfig eth0 192.168.2.1/24</code>
+                    </td>
+                    <td>
+                        Set IP address in Linux.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">ifconfig eth0:1 192.168.2.3/24</code>
+                    </td>
+                    <td>
+                        Add IP address to existing network interface in Linux.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">ifconfig eth0 hw ether MACADDR</code>
+                    </td>
+                    <td>
+                        Change MAC address in Linux using ifconfig.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">ifconfig eth0 mtu 1500</code>
+                    </td>
+                    <td>
+                        Change MTU size Linux using ifconfig, change 1500 to your desired MTU.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">dig -x 192.168.1.1 </code>
+                    </td>
+                    <td>
+                        Dig reverse lookup on an IP address.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">host 192.168.1.1 </code>
+                    </td>
+                    <td>
+                        Reverse lookup on an IP address, in case dig is not installed.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">dig @192.168.2.2 domain.com -t AXFR</code>
+                    </td>
+                    <td>
+                        Perform a DNS zone transfer using dig.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">host -l domain.com nameserver</code>
+                    </td>
+                    <td>
+                        Perform a DNS zone transfer using host.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">nbtstat -A x.x.x.x</code>
+                    </td>
+                    <td>
+                        Get hostname for IP address.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">ip addr add 192.168.2.22/24 dev eth0</code>
+                    </td>
+                    <td>
+                        Adds a hidden IP address to Linux, does not show up when performing an ifconfig.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">tcpkill -9 host google.com</code>
+                    </td>
+                    <td>
+                        Blocks access to google.com from the host machine.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">echo "1" &gt; /proc/sys/net/ipv4/ip_forward</code>
+                    </td>
+                    <td>
+                        Enables IP forwarding, turns Linux box into a router – handy for routing traffic through a box.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">echo "8.8.8.8" &gt; /etc/resolv.conf</code>
+                    </td>
+                    <td>
+                        Use Google DNS.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="lc-sys">System Information Commands</h2>
+        <p>
+            Useful for local enumeration
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>COMMAND</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">whoami</code>
+                    </td>
+                    <td>Shows currently logged in user on Linux.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">id</code>
+                    </td>
+                    <td>Shows currently logged in user and groups for the user.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">last</code>
+                    </td>
+                    <td>Shows last logged in users.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">mount</code>
+                    </td>
+                    <td>Show mounted drives.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">df -h</code>
+                    </td>
+                    <td>Shows disk usage in human readable output.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">echo "user:passwd" | chpasswd</code>
+                    </td>
+                    <td>Reset password in one line.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">getent passwd</code>
+                    </td>
+                    <td>List users on Linux.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">strings /usr/local/bin/blah</code>
+                    </td>
+                    <td>Shows contents of none text files, e.g. whats in a binary.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">uname -ar</code>
+                    </td>
+                    <td>Shows running kernel version.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">PATH=$PATH:/my/new-path</code>
+                    </td>
+                    <td>Add a new PATH, handy for local FS manipulation.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">history</code>
+                    </td>
+                    <td>Show bash history, commands the user has entered previously.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="lc-user">Linux User Management</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>COMMAND</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">whoami</code>
+                    </td>
+                    <td>Shows currently logged in user on Linux.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">id</code>
+                    </td>
+                    <td>Shows currently logged in user and groups for the user.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">last</code>
+                    </td>
+                    <td>Shows last logged in users.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">mount</code>
+                    </td>
+                    <td>Show mounted drives.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">df -h</code>
+                    </td>
+                    <td>Shows disk usage in human readable output.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">echo "user:passwd" | chpasswd</code>
+                    </td>
+                    <td>Reset password in one line.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">getent passwd</code>
+                    </td>
+                    <td>List users on Linux.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">strings /usr/local/bin/blah</code>
+                    </td>
+                    <td>Shows contents of none text files, e.g. whats in a binary.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">uname -ar</code>
+                    </td>
+                    <td>Shows running kernel version.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">PATH=$PATH:/my/new-path</code>
+                    </td>
+                    <td>Add a new PATH, handy for local FS manipulation.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">history</code>
+                    </td>
+                    <td>Show bash history, commands the user has entered previously.</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2 id="lc-file">Linux File Commands</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>COMMAND</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">df -h blah</code>
+                    </td>
+                    <td>Display size of file / dir Linux.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">diff file1 file2</code>
+                    </td>
+                    <td>Compare / Show differences between two files on Linux.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">md5sum file</code>
+                    </td>
+                    <td>Generate MD5SUM Linux.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">md5sum -c blah.iso.md5</code>
+                    </td>
+                    <td>Check file against MD5SUM on Linux, assuming both file and .md5 are in the same dir.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">file blah</code>
+                    </td>
+                    <td>Find out the type of file on Linux, also displays if file is 32 or 64 bit.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">dos2unix</code>
+                    </td>
+                    <td>Convert Windows line endings to Unix / Linux.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">base64 &lt; input-file &gt; output-file</code>
+                    </td>
+                    <td>Base64 encodes input file and outputs a Base64 encoded file called output-file.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">base64 -d &lt; input-file &gt; output-file</code>
+                    </td>
+                    <td>Base64 decodes input file and outputs a Base64 decoded file called output-file.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">touch -r ref-file new-file</code>
+                    </td>
+                    <td>Creates a new file using the timestamp data from the reference file, drop the -r to simply create a file.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">rm -rf</code>
+                    </td>
+                    <td>Remove files and directories without prompting for confirmation.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="lc-samba">Samba Commands</h2>
+        <p>
+            Connect to a Samba share from Linux.
+<pre class="prettyprint">
+<code>
+$ smbmount //server/share /mnt/win -o user=username,password=password1
+$ smbclient -U user \\\\server\\share
+$ mount -t cifs -o username=user,password=password //x.x.x.x/share /mnt/share
+</code>
+</pre>
+        </p>
+        </table>
+
+        <h2 id="lc-shell">Breaking Out of Limited Shells</h2>
+        <p>
+            The Python trick:
+<pre class="prettyprint">
+<code>
+$ python -c 'import pty;pty.spawn("/bin/bash")'
+$ echo os.system('/bin/bash')
+$ /bin/sh -i
+</code>
+</pre>
+        </p>
+        
+        <h2 id="lc-misc">Misc Commands</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>COMMAND</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+            </thead><tbody>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">init 6</code>
+                    </td>
+                    <td>Reboot Linux from the command line.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">gcc -o output.c input.c</code>
+                    </td>
+                    <td>Compile C code.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">gcc -m32 -o output.c input.c</code>
+                    </td>
+                    <td>Cross compile C code, compile 32 bit binary on 64 bit Linux.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">unset HISTORYFILE</code>
+                    </td>
+                    <td>Disable bash history logging.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">rdesktop X.X.X.X</code>
+                    </td>
+                    <td>Connect to RDP server from Linux.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">kill -9 $$</code>
+                    </td>
+                    <td>Kill current session.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">chown user:group blah</code>
+                    </td>
+                    <td>Change owner of file or dir.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">chown -R user:group blah</code>
+                    </td>
+                    <td>Change owner of file or dir and all underlying files / dirs – recersive chown.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">chmod 600 file</code>
+                    </td>
+                    <td>Change file / dir permissions, see [Linux File System Permissons](#linux-file-system-permissions) for details.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            Clear bash history:
+<pre class="prettyprint">
+<code>
+$ ssh user@X.X.X.X | cat /dev/null > ~/.bash_history
+</code>
+</pre>
+        </p>
+        
+        <h2 id="lc-perms">Linux File System Permissions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>VALUE</th>
+                    <th>MEANING</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">777</code>
+                    </td>
+                    <td>
+                        <code class="prettyprint inline">rwxrwxrwx</code>&nbsp;No restriction, global WRX any user can do anything.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">755</code>
+                    </td>
+                    <td>
+                        <code class="prettyprint inline">rwxr-xr-x</code>&nbsp;Owner has full access, others can read and execute the file.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">700</code>
+                    </td>
+                    <td>
+                        <code class="prettyprint inline">rwx------</code>&nbsp;Owner has full access, no one else has access.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">666</code>
+                    </td>
+                    <td>
+                        <code class="prettyprint inline">rw-rw-rw-</code>&nbsp;All users can read and write but not execute.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">644</code>
+                    </td>
+                    <td>
+                        <code class="prettyprint inline">rw-r--r--</code>&nbsp;Owner can read and write, everyone else can read.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">600</code>
+                    </td>
+                    <td>
+                        <code class="prettyprint inline">rw-------</code>&nbsp;Owner can read and write, everyone else has no access.</td>
+                </tr>
+            </tbody>
+        </table>
+        </p>
+        
+        <h2 id="lc-dirs">Linux Directories</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>DIRECTORY</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/</code>
+                    </td>
+                    <td>/ also know as “slash” or the root.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/bin</code>
+                    </td>
+                    <td>Common programs, shared by the system, the system administrator and the users.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/boot</code>
+                    </td>
+                    <td>Boot files, boot loader (grub), kernels, vmlinuz</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/dev</code>
+                    </td>
+                    <td>Contains references to system devices, files with special properties.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/etc</code>
+                    </td>
+                    <td>Important system config files.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/home</code>
+                    </td>
+                    <td>Home directories for system users.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/lib</code>
+                    </td>
+                    <td>Library files, includes files for all kinds of programs needed by the system and the users.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/lost+found</code>
+                    </td>
+                    <td>Files that were saved during failures are here.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/mnt</code>
+                    </td>
+                    <td>Standard mount point for external file systems.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/media</code>
+                    </td>
+                    <td>Mount point for external file systems (on some distros).</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/net</code>
+                    </td>
+                    <td>Standard mount point for entire remote file systems – nfs.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/opt</code>
+                    </td>
+                    <td>Typically contains extra and third party software.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/proc</code>
+                    </td>
+                    <td>A virtual file system containing information about system resources.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/root</code>
+                    </td>
+                    <td>root users home dir.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/sbin</code>
+                    </td>
+                    <td>Programs for use by the system and the system administrator.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/tmp</code>
+                    </td>
+                    <td>Temporary space for use by the system, cleaned upon reboot.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/usr</code>
+                    </td>
+                    <td>Programs, libraries, documentation etc. for all user-related programs.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/var</code>
+                    </td>
+                    <td>Storage for all variable files and temporary files created by users, such as log files, mail queue, print spooler.
+                        Web servers, Databases etc.</td>
+                </tr>
+            </tbody>
+        </table>
+        </p>
+        
+        <h2 id="lc-cool-dirs">Linux Interesting Files / Directories</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>DIRECTORY</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/etc/passwd</code>
+                    </td>
+                    <td>Contains local Linux users.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/etc/shadow</code>
+                    </td>
+                    <td>Contains local account password hashes.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/etc/group</code>
+                    </td>
+                    <td>Contains local account groups.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/etc/init.d/</code>
+                    </td>
+                    <td>Contains service init script – worth a look to see whats installed.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/etc/hostname</code>
+                    </td>
+                    <td>System hostname.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/etc/network/interfaces</code>
+                    </td>
+                    <td>Network interfaces.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/etc/resolv.conf</code>
+                    </td>
+                    <td>System DNS servers.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/etc/profile</code>
+                    </td>
+                    <td>System environment variables.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">~/.ssh/</code>
+                    </td>
+                    <td>SSH keys.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">~/.bash_history</code>
+                    </td>
+                    <td>Users bash history log.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/var/log/</code>
+                    </td>
+                    <td>Linux system log files are typically stored here.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/var/adm/</code>
+                    </td>
+                    <td>UNIX system log files are typically stored here.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/var/log/apache2/access.log</code>
+                        <p></p>
+                        <p>
+                            <code class="prettyprint inline">/var/log/httpd/access.log</code>
+                        </p>
+                    </td>
+                    <td>Apache access log file typical path.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <code class="prettyprint inline">/etc/fstab</code>
+                    </td>
+                    <td>File system mounts.</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
