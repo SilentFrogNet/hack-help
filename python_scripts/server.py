@@ -15,6 +15,7 @@ print("Client connected with address: ", address)
 
 while 1:
     data = connection.recv(1024)
-    if not data: break
+    if not data: 
+        break
     print(data.decode('utf-8'))
 connection.close()

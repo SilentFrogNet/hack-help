@@ -12,7 +12,5 @@ for port in range(lowport, highport):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     status = s.connect_ex((target, port))
     if status == 0:
-        print("*** Port {} - OPEN ***".format(port))
-    else:
-        print("Port {} - CLOSED".format(port))
+        print("Port {} is OPEN".format(port))
     s.close()
