@@ -30,7 +30,8 @@
                 </ul>
             </li>
             <li><a href="#http-methods">Enum HTTP Methods</a></li>
-            <li><a href="#http-methods">Enum HTTP Methods</a></li>
+            <li><a href="#http-check-res">Check HTTP Resource</a></li>
+            <li><a href="#vuln-banner">Check Vulnerabilities by Service Banner</a></li>
         </ol>
 
         <span style="color: red"><b><i>DISCLAIMER: all the code below are written for python3.</i></b></span>
@@ -100,6 +101,11 @@ connection.close()
 <code>
 import socket
 
+common_services = {
+    21: 'FTP',
+    ...
+}
+
 target = input("Enter the IP address to scan: ")
 portrange = input("Enter the port range to scan (es 5-200): ")
 
@@ -112,9 +118,10 @@ for port in range(lowport, highport):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     status = s.connect_ex((target, port))
     if status == 0:
-        print("*** Port {} - OPEN ***".format(port))
-    else:
-        print("Port {} - CLOSED".format(port))
+        common_text = ""
+        if int(port) in common_services.keys():
+            common_text = " - Default protocol: {}".format(common_services[int(port)])
+        print("Port {} is OPEN{}".format(port, common_text))
     s.close()
 </code>
 </pre>
@@ -277,6 +284,19 @@ try:
     connection.close()
 except ConnectionRefusedError:
     print("Connection failed")
+</code>
+</pre>
+        </p>
+
+        <h1 id="vuln-banner">Check Vulnerabilities by Service Banner</h1>
+        <p>
+            A simple program that checks for known service vulnerabilities analyzing the banner that they report (<a href="python_scripts/check_vuln_by_banner.py" target="_blank">Get</a>)
+        </p>
+        
+        <p>
+<pre class="prettyprint">
+<code>
+... too much code, see script directly ...
 </code>
 </pre>
         </p>
